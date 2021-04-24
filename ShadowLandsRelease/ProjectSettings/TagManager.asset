@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - END_ZONE
+  - DEAD_ZONE
+  - Ground
+  - WALL
+  - WIN_ZONE
+  - SAVE
+  - SAVE_CLIMB
+  - SAVE_FLY
+  - CHECKPOINT
+  - RUN_TRIGGER
+  - DIAMOND_POINT
+  - GROUND_TRIGGER
+  - AudioManager
+  - Link
+  - PAUSE_MENU
+  - BLOCK
+  - GAME_CONTROLLER
+  - BG
+  - ROCK
+  - CHALLENGES_CONTROLLER
+  - SHADOW
+  - Point
+  - Piece
+  - StoneToDrag
+  - Fire
+  - Coin
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0

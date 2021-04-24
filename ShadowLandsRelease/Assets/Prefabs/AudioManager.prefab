@@ -1,0 +1,236 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1193269743202580371
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1193269743202580365}
+  - component: {fileID: 1193269743202580370}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: AudioManager
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1193269743202580365
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1193269743202580371}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1193269743202580370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1193269743202580371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 679c236a01ae9c040a697f0006a99779, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Cut
+    clip: {fileID: 8300000, guid: 98d2792bd06c9ae4fa576d568f3a482b, type: 3}
+    volume: 0.5
+    pitch: 1
+    blend: 0
+    loop: 0
+    playOnAwake: 0
+    minDistance: 5
+    maxDistance: 50
+    source: {fileID: 0}
+  - name: EarthTheme
+    clip: {fileID: 8300000, guid: ee1d5184077701f44bd834dcd0842733, type: 3}
+    volume: 0.8
+    pitch: 1
+    blend: 0
+    loop: 1
+    playOnAwake: 0
+    minDistance: 50
+    maxDistance: 50
+    source: {fileID: 0}
+  - name: Fall
+    clip: {fileID: 8300000, guid: fcfbae5fc3e254a47994a0adfc216204, type: 3}
+    volume: 0.5
+    pitch: 0.8
+    blend: 0
+    loop: 0
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: Jump
+    clip: {fileID: 8300000, guid: f00f1d210010c074f99f467bcf673664, type: 3}
+    volume: 0.5
+    pitch: 0.8
+    blend: 0
+    loop: 0
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: Land
+    clip: {fileID: 8300000, guid: f89d8ac7946530a4f8f8001142d743c8, type: 3}
+    volume: 0.4
+    pitch: 1
+    blend: 0
+    loop: 0
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: MainTheme
+    clip: {fileID: 8300000, guid: fe274d4c25e8ca94c97a093b750e51a7, type: 3}
+    volume: 1
+    pitch: 1
+    blend: 0
+    loop: 1
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: RockTheme
+    clip: {fileID: 8300000, guid: 79563e8b2c2f9984294e277531fb6a14, type: 3}
+    volume: 0.8
+    pitch: 1
+    blend: 0
+    loop: 1
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: Running
+    clip: {fileID: 8300000, guid: 35c71f5191daf7b4ab77d11924d64e88, type: 3}
+    volume: 0.2
+    pitch: 0.6
+    blend: 0
+    loop: 1
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: SandTheme
+    clip: {fileID: 8300000, guid: 63222142c90fde44498ce27a46757a90, type: 3}
+    volume: 0.8
+    pitch: 1
+    blend: 0
+    loop: 1
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: UI_Transition
+    clip: {fileID: 8300000, guid: 306dd2f6163342a4c960c53b13de7d07, type: 3}
+    volume: 0.5
+    pitch: 1
+    blend: 0
+    loop: 0
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: VolcanoTheme
+    clip: {fileID: 8300000, guid: 4063416fb06ae2c4aa1fedb9ea7b47c2, type: 3}
+    volume: 0.8
+    pitch: 1
+    blend: 0
+    loop: 1
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: Diamond
+    clip: {fileID: 8300000, guid: 0ca68df74e691564496b780be0684433, type: 3}
+    volume: 0.1
+    pitch: 3
+    blend: 0
+    loop: 0
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: RockFall
+    clip: {fileID: 8300000, guid: c1bdf77666a3b4548877fd4daa8e2ac7, type: 3}
+    volume: 0.3
+    pitch: 1
+    blend: 0
+    loop: 0
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: LevelUp
+    clip: {fileID: 8300000, guid: f6d7c6514c2286e4eb6a3f5549921fc0, type: 3}
+    volume: 0.6
+    pitch: 1
+    blend: 0
+    loop: 0
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: Fall45
+    clip: {fileID: 8300000, guid: f8ba170b18aaacd4098b972fadaac964, type: 3}
+    volume: 0.4
+    pitch: 1
+    blend: 0
+    loop: 0
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: ChainCut
+    clip: {fileID: 8300000, guid: 1172e5067a0e5264e9e7ac80cf0fba57, type: 3}
+    volume: 0.4
+    pitch: 2
+    blend: 0
+    loop: 0
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: StoneDrop
+    clip: {fileID: 8300000, guid: aa75801e1f7c47640b633f2f456e9242, type: 3}
+    volume: 0.4
+    pitch: 0.8
+    blend: 0
+    loop: 0
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: Shadow
+    clip: {fileID: 8300000, guid: a55baec1e23188b499d7b5bfcf2bfa9f, type: 3}
+    volume: 0.4
+    pitch: 0.5
+    blend: 0
+    loop: 0
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: DrawLand
+    clip: {fileID: 8300000, guid: fe2fba9b71beae6488cc2825e3fc35b0, type: 3}
+    volume: 0.3
+    pitch: 1
+    blend: 0
+    loop: 0
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}

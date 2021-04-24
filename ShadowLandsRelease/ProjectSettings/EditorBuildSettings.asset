@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Greetings.unity
+    guid: bbad232d7213d8c44b01fde0b3bd3487
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 7eaabe561ec733f45b78e53c773d7f44
+  - enabled: 1
+    path: Assets/Scenes/EarthMaps/EarthMap01.unity
+    guid: b9bc3366f762ba34b8915ecbe2a694a8
+  - enabled: 1
+    path: Assets/Scenes/EarthMaps/EarthMap02.unity
+    guid: ab085abfdd2a58b45ba85f0440723339
+  - enabled: 1
+    path: Assets/Scenes/EarthMaps/EarthMap03.unity
+    guid: 33a7346a72414124c8a72c52ee496796
+  - enabled: 1
+    path: Assets/Scenes/EarthMaps/EarthMap04.unity
+    guid: 2ec1b4f343008c8469c4320df2a5e7de
+  - enabled: 1
+    path: Assets/Scenes/EarthMaps/EarthMap05.unity
+    guid: 5a3eef67e0e94594c979beae06aeca46
+  - enabled: 1
+    path: Assets/Scenes/RockMaps/RockMap01.unity
+    guid: 3712cb425b9241c4db2099c032d034cd
+  - enabled: 1
+    path: Assets/Scenes/RockMaps/RockMap02.unity
+    guid: 99c26a21ecd96a14093626f95d1e8fe5
+  - enabled: 1
+    path: Assets/Scenes/RockMaps/RockMap03.unity
+    guid: 94ad9009eee70ec48a029321ef2f39d9
+  - enabled: 1
+    path: Assets/Scenes/RockMaps/RockMap04.unity
+    guid: ebcbeecc6931e374a9f19372beff1b02
+  - enabled: 1
+    path: Assets/Scenes/RockMaps/RockMap05.unity
+    guid: edfc912180a1fdc42a99a4754f0e4bfa
+  - enabled: 1
+    path: Assets/Scenes/SandMaps/SandMap01.unity
+    guid: 88bb6d9260facad49a5b7cc4d7463dbb
+  - enabled: 1
+    path: Assets/Scenes/SandMaps/SandMap02.unity
+    guid: 792e12b1bf4e31e4788690b4130ba447
+  m_configObjects: {}

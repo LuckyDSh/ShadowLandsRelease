@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a64e5b0e436d4bed9780211ae245f7b, type: 3}
+  m_Name: robbyanim_Data
+  m_EditorClassIdentifier: 
+  dataName: robbyanim
+  dragonBonesJSON: {fileID: 4900000, guid: ba6fadfd8888a7142a219634722ff0be, type: 3}
+  textureAtlas:
+  - textureAtlasJSON: {fileID: 4900000, guid: faebe3ffeef702a4cafa94a507dcb49f, type: 3}
+    texture: {fileID: 2800000, guid: ffe110002b9ee7345a4719bb4df95e07, type: 3}
+    material: {fileID: 2100000, guid: 9c908ac150647b74085df2455aa87e24, type: 2}
+    uiMaterial: {fileID: 0}

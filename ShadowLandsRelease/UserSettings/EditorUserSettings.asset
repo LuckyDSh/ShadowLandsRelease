@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!162 &1
+EditorUserSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 4
+  m_ConfigSettings:
+    RecentlyUsedScenePath-0:
+      value: 224247031146467f1f0f0b2d1e01501e1304570e29252923621a1e36ece52777d0e226e5e6393a183011ff300527353aea1e1c19f33f0f180540e80018eb09
+      flags: 0
+    RecentlyUsedScenePath-1:
+      value: 22424703114646682c38291d370272355924193c290f273d280f0f36e7af1120e3ea26e5e229700f3814ea7c333b0370c10b1f0eb63c0f095f1bf30705e6
+      flags: 0
+    RecentlyUsedScenePath-2:
+      value: 22424703114646682c38291d370272355924193c290f273d280f0f36e7af1120e3ea26e5e229701d2c16e07c373f173abd2b1c1ff94b390a070bb31b1ff6040a
+      flags: 0
+    RecentlyUsedScenePath-3:
+      value: 22424703114646682c38291d370272355924193c290f273d280f0f36e7af1120e3ea26e5e229700f3814ea7c373d0033f7453a0ae00e4a38120ff10b5fea1e1a05dc
+      flags: 0
+    RecentlyUsedScenePath-4:
+      value: 22424703114646682c38291d370272355924193c290f273d280f0f36e7af1120e3ea26e5e229700f3814ea7c3631153ee6030605b9380b1d144ecf0105fe041a1ecb56d014c10b05
+      flags: 0
+    RecentlyUsedScenePath-5:
+      value: 22424703114646682c38291d370272355924193c290f273d280f0f36e7af1120e3ea26e5e229700f3814ea7c272b122bfd074638f71d0f4b321bee1a1ef25e061fcc0cdc
+      flags: 0
+    RecentlyUsedScenePath-6:
+      value: 22424703114646682c38291d370272355924193c290f273d280f0f36e7af1120e3ea26e5e229700f3814ea7c34311236e6030605b9380b1d144ecd0102f6041a1ecb56d014c10b05
+      flags: 0
+    RecentlyUsedScenePath-7:
+      value: 22424703114646680e0b0227036c7a11040310072d38357f08280f27eacd3528b2b578fce9332b25
+      flags: 0
+    RecentlyUsedScenePath-8:
+      value: 22424703114646680e0b0227036c72111f19352f223d68252320092a
+      flags: 0
+    RecentlyUsedScenePath-9:
+      value: 22424703114646680e0b0227036c7a11040310072d38357f08280f27eacd3528b2b678fce9332b25
+      flags: 0
+    UnityRemoteDevice:
+      value: 225f4d46245b0d4902070862342649191512
+      flags: 0
+    vcSharedLogLevel:
+      value: 0d5e400f0650
+      flags: 0
+  m_VCAutomaticAdd: 1
+  m_VCDebugCom: 0
+  m_VCDebugCmd: 0
+  m_VCDebugOut: 0
+  m_SemanticMergeMode: 2
+  m_VCShowFailedCheckout: 1
+  m_VCOverwriteFailedCheckoutAssets: 1
+  m_VCProjectOverlayIcons: 1
+  m_VCHierarchyOverlayIcons: 1
+  m_VCOtherOverlayIcons: 1
+  m_VCAllowAsyncUpdate: 0
