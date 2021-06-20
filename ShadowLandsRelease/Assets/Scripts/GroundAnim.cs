@@ -8,6 +8,7 @@ public class GroundAnim : MonoBehaviour
 {
     #region Variables
     [SerializeField] private float move_speed = 2f;
+    [SerializeField] private bool Updown;
     private bool is_finished;
     #endregion
 
@@ -21,6 +22,16 @@ public class GroundAnim : MonoBehaviour
         transform.position = transform.position - transform.up * move_speed * Time.fixedDeltaTime;
     }
 
+    public void LevitateRIGHT()
+    {
+        transform.position = transform.position + transform.right * move_speed * Time.fixedDeltaTime;
+    }
+
+    public void LevitateLEFT()
+    {
+        transform.position = transform.position - transform.right * move_speed * Time.fixedDeltaTime;
+    }
+
     #region UnityMethods
     void Start()
     {
@@ -29,13 +40,27 @@ public class GroundAnim : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (is_finished)
+        if (Updown)
         {
-            LevitateUP();
+            if (is_finished)
+            {
+                LevitateUP();
+            }
+            else
+            {
+                LevitateDOWN();
+            }
         }
         else
         {
-            LevitateDOWN();
+            if (is_finished)
+            {
+                LevitateLEFT();
+            }
+            else
+            {
+                LevitateRIGHT();
+            }
         }
     }
     #endregion

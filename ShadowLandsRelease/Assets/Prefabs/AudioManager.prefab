@@ -234,3 +234,53 @@ MonoBehaviour:
     minDistance: 0
     maxDistance: 0
     source: {fileID: 0}
+  - name: FireTurbin
+    clip: {fileID: 8300000, guid: 15f806c17205a41449a5629ed2c194be, type: 3}
+    volume: 0.4
+    pitch: 0.8
+    blend: 0
+    loop: 0
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: Pop
+    clip: {fileID: 8300000, guid: fc55b864350287742abc916dfbe3bc48, type: 3}
+    volume: 0.2
+    pitch: 1.1
+    blend: 0
+    loop: 0
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: DARK_Theme
+    clip: {fileID: 8300000, guid: 16ad5642f47dc1c4085022fc39c946fe, type: 3}
+    volume: 0.8
+    pitch: 1
+    blend: 0
+    loop: 0
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: Forest
+    clip: {fileID: 8300000, guid: ca9fbc5b0ed823d429421d42e2361a6b, type: 3}
+    volume: 0.5
+    pitch: 1
+    blend: 0
+    loop: 0
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}
+  - name: Energy
+    clip: {fileID: 8300000, guid: f6d7c6514c2286e4eb6a3f5549921fc0, type: 3}
+    volume: 0.5
+    pitch: 0.6
+    blend: 0
+    loop: 0
+    playOnAwake: 0
+    minDistance: 0
+    maxDistance: 0
+    source: {fileID: 0}

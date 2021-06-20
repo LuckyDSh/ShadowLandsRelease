@@ -40,9 +40,9 @@ public class GAME_CONTROLLER : MonoBehaviour
     public static bool is_Sound_On;
     public static bool is_DarkMode_On;
 
-    private readonly int FIRST = 1;
-    private readonly int SECOND = 2;
-    private readonly int THIRD = 3;
+    private readonly int FIRST = 2;
+    private readonly int SECOND = 3;
+    private readonly int THIRD = 4;
     private int this_scene_index;
     private Vector2 initial_pos_settings;
     private Vector2 initial_pos_shop;

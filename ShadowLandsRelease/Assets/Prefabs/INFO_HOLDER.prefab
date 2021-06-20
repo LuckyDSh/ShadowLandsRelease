@@ -43,3 +43,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f322d91a436c73d49aba723e2645e85b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundTrack: DARK_Theme
+  energy_slider: {fileID: 0}
+  energy_txt: {fileID: 0}
+  maxEnergy_num: 0
+  currentEnergy_num: 0
+  energy_effect: {fileID: 0}
+  is_same_theme_found: 0

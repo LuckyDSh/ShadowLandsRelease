@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8281288209007916778}
   - component: {fileID: 8281288209007916772}
   - component: {fileID: 8281288209007916776}
-  - component: {fileID: 8281288209007916779}
   - component: {fileID: 8281288209007916783}
   - component: {fileID: 8281288209007916782}
   m_Layer: 0
@@ -136,6 +135,7 @@ MonoBehaviour:
   distance__num_txt: {fileID: 0}
   score_num_txt: {fileID: 0}
   acceleration_UI: []
+  Shadow: {fileID: 0}
   lands_sets: []
   diamonds_collected_txt: {fileID: 0}
   reward_txt: {fileID: 0}
@@ -145,22 +145,6 @@ MonoBehaviour:
   REWARD_FOR_LAND_INTERACTION: 500
   is_on_direction_change: 0
   upCollidder_buffer: {fileID: 0}
---- !u!58 &8281288209007916779
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8281288209007916773}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: ed83853c602e4e243b25717ccd79536a, type: 2}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.08
 --- !u!95 &8281288209007916783
 Animator:
   serializedVersion: 3

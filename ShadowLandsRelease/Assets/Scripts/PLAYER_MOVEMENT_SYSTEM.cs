@@ -3,10 +3,10 @@
 *	All rights reserved
 */
 using BayatGames.SaveGameFree;
+using DragonBones;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using DragonBones;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
@@ -18,10 +18,18 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
     [SerializeField] private float jump_force = 10f;
     [SerializeField] private float down45_force = 10f;
     [SerializeField] private float up_force = 5f;
-    [SerializeField] private float up_force_limit;
+    [SerializeField] private float new_gravity_scale;
     [SerializeField] private float action_duration = 3f;
     [SerializeField] private float time_slowDown_amount;
     [SerializeField] private bool[] is_On_Jumps;
+    [SerializeField] private GameObject fireTurbin;
+    [SerializeField] private GameObject drone;
+    private BoxCollider2D this_collider;
+
+    [Header("DEATH SECTION")]
+    [Space]
+    [SerializeField] GameObject[] bodyParts;
+    private static bool is_Player_Dead;
 
     [Header("UI SECTION")]
     [Space]
@@ -48,7 +56,7 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
     [SerializeField] private int REWARD_FOR_CHECKPOINT;
     [SerializeField] private int REWARD_FOR_NICE_FALL;
     [SerializeField] private int REWARD_FOR_LAND_INTERACTION;
-    private Challenge_Controller challenge_Controller;
+    //private Challenge_Controller challenge_Controller;
     private Text _reward_txt;
     public static int total_score_num;
     public static int collected_diamonds_num;
@@ -65,17 +73,23 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
     private float current_speed;
     private readonly float SPEED_OFFSET_FOR_DISTANCE_COUNTER = 0.75f;
 
+    //[Header("Obstacles")]
+    //private RollingBall_Controller[] RollingBalls; 
+
     //for movement
     [Tooltip("If set to true - moving RIGHT, else LEFT")]
     [SerializeField] private bool is_on_direction_change;
     private bool is_Grounded;
     private bool is_Jumped;
     private bool moving_right;
+    private bool is_crouch_zone_triggered;
     private bool is_run_zone_triggered;
     private bool is_up_zone_triggered;
     private bool is_stone_to_drag_triggered;
     public static bool is_hangedLandCut;
     public static bool is_destroyingRockLand;
+    private bool is_strongLanding;
+    private bool is_started;
 
     //for animation
     private bool is_Running;
@@ -90,19 +104,23 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
     void Start()
     {
         #region INICIALISATION
+        is_Player_Dead = false;
         is_hangedLandCut = false;
+        is_started = false;
+        is_strongLanding = false;
         is_run_zone_triggered = false;
         is_up_zone_triggered = false;
+        is_crouch_zone_triggered = false;
         current_speed = forward_speed;
         index_of_current_landset = 0;
         collected_diamonds_num = 0;
-        up_force_limit = up_force;
         is_Acceleration_pressed_one_time = false;
         is_fall_pressed = false;
         //is_On_Jump = false;
         is_Running = false;
         is_diamond_picked = false;
         animator = GetComponent<UnityArmatureComponent>();
+        this_collider = GetComponent<Collider2D>() as BoxCollider2D;
         //is_on_direction_change = false;
         cameraMovementController = Camera.main.GetComponent<SmoothCameraScript>();
         this_transform = transform;
@@ -111,13 +129,16 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
         is_Jumped = false;
         _reward_txt = reward_txt.GetComponent<Text>();
         Shadow.SetActive(false);
+        GO_UI.SetActive(false);
+        GW_UI.SetActive(false);
+        fireTurbin.SetActive(false);
         animator.animation.Play("idle");
 
-        if (challenge_Controller == null)
-        {
-            challenge_Controller =
-                GameObject.FindGameObjectWithTag("CHALLENGES_CONTROLLER").GetComponent<Challenge_Controller>();
-        }
+        //if (challenge_Controller == null)
+        //{
+        //    challenge_Controller =
+        //        GameObject.FindGameObjectWithTag("CHALLENGES_CONTROLLER").GetComponent<Challenge_Controller>();
+        //}
 
         if (SaveGame.Load<int>("DISTANCE") > 0)
             distance_traveled = SaveGame.Load<int>("DISTANCE"); //DISTANCE
@@ -134,6 +155,11 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
             item.SetActive(false);
         }
 
+        foreach (var part in bodyParts)
+        {
+            part.GetComponent<PolygonCollider2D>().enabled = false;
+            part.GetComponent<Rigidbody2D>().isKinematic = true;
+        }
 
         if (SaveGame.Load<int>("SCORE") != 0)
         {
@@ -167,32 +193,42 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
 
     void Update()
     {
-        if (is_hangedLandCut)
+        if (!is_Player_Dead)
         {
-            challenge_Controller.CutHangedLand();
-            challenge_Controller.LandSpecialLand();
-            is_hangedLandCut = false;
+            if (INFO_HOLDER.currentEnergy_num_buffer <= 0)
+            {
+                StartCoroutine("DEATH");
+            }
+
+            if (is_hangedLandCut)
+            {
+                //challenge_Controller.CutHangedLand();
+                //challenge_Controller.LandSpecialLand();
+                is_hangedLandCut = false;
+            }
+
+            if (is_destroyingRockLand)
+            {
+                //challenge_Controller.LandSpecialLand();
+                is_destroyingRockLand = false;
+            }
+
+            distance_traveled += Time.deltaTime * current_speed * SPEED_OFFSET_FOR_DISTANCE_COUNTER;
+            score_num_txt.text = total_score_num.ToString();
+
+            DIAMOND_PICKED();
         }
-
-        if (is_destroyingRockLand)
-        {
-            challenge_Controller.LandSpecialLand();
-            is_destroyingRockLand = false;
-        }
-
-        distance_traveled += Time.deltaTime * current_speed * SPEED_OFFSET_FOR_DISTANCE_COUNTER;
-        score_num_txt.text = total_score_num.ToString();
-
-        DIAMOND_PICKED();
     }
 
     void FixedUpdate()
     {
-        if (is_Running)
-            if (!is_on_direction_change)
-                MOVE_LEFT();
-            else
-                MOVE_RIGHT();
+        if (!is_Player_Dead)
+            if (is_started)
+                if (is_Running)
+                    if (!is_on_direction_change)
+                        MOVE_LEFT();
+                    else
+                        MOVE_RIGHT();
     }
     #endregion
 
@@ -201,6 +237,7 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
     public void ACT()
     {
         Debug.Log("ACT...");
+        INFO_HOLDER.Change_Energy_State(5);
 
         if (is_up_zone_triggered)
         {
@@ -220,6 +257,32 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
             PUSH();
             is_stone_to_drag_triggered = false;
         }
+        else if (is_crouch_zone_triggered)
+        {
+            CROUCH();
+            is_crouch_zone_triggered = false;
+        }
+    }
+
+    public void CROUCH()
+    {
+        StartCoroutine("Crouch_enum");
+    }
+
+    public IEnumerator Crouch_enum()
+    {
+        animator.animation.Play("crouch");
+        this_collider.size = new Vector2(this_collider.size.x, this_collider.size.y / 2);
+
+        yield return new WaitForSeconds(action_duration);
+
+        animator.animation.Stop("crouch");
+        this_collider.size = new Vector2(this_collider.size.x, this_collider.size.y * 2);
+
+        foreach (var item in acceleration_UI)
+        {
+            item.SetActive(false);
+        }
     }
 
     public void UP()
@@ -229,7 +292,7 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
         this_rb.gravityScale = 1f;
         this_rb.AddForce(this_transform.up * up_force, ForceMode2D.Impulse);
 
-        challenge_Controller.AvoidFall();
+        //challenge_Controller.AvoidFall();
 
         is_Running = true;
 
@@ -301,32 +364,49 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
     {
         if (is_Grounded)
         {
-            AudioManager.instance.Play("Jump");
-
-            if (moving_right)
-                this_rb.AddForce(new Vector3(jump_force, jump_force * 1.5f, 0));
-            else
-                this_rb.AddForce(new Vector3(-jump_force, jump_force * 1.5f, 0));
-
-            //play random jump animation
-            animator.animation.Stop("run"); // ----------------------------------------->
-            animator.animation.Play("jumpup"); // ----------------------------------------->
-
-            challenge_Controller.Jump();
-
-            INCREMENT_CURRENT_SPEED();
-
-            Time.timeScale = time_slowDown_amount;
-            //Shadow.SetActive(true);
-
-            is_Jumped = true;
-            is_Grounded = false;
+            INFO_HOLDER.Change_Energy_State(1);
+            StartCoroutine("JUMP_enum");
         }
     }
+
+    private IEnumerator JUMP_enum()
+    {
+        AudioManager.instance.Play("Jump");
+        AudioManager.instance.Play("FireTurbin");
+        this_rb.gravityScale = 1f;
+
+        fireTurbin.SetActive(true);
+
+        if (moving_right)
+            this_rb.AddForce(new Vector3(jump_force, jump_force * 1.5f, 0));
+        else
+            this_rb.AddForce(new Vector3(-jump_force, jump_force * 1.5f, 0));
+
+        //play random jump animation
+        animator.animation.Stop("run"); // ----------------------------------------->
+        animator.animation.Play("jumpup"); // ----------------------------------------->
+
+        //challenge_Controller.Jump();
+
+        INCREMENT_CURRENT_SPEED();
+
+        Time.timeScale = time_slowDown_amount;
+        Shadow.SetActive(true);
+
+        is_Jumped = true;
+        is_Grounded = false;
+
+        yield return new WaitForSeconds(0.1f);
+
+        animator.animation.Stop("jumpup");
+        animator.animation.Play("freeFly");
+    }
+
     public void FALL_45()
     {
         if (is_Jumped)
         {
+            INFO_HOLDER.Change_Energy_State(2);
             animator.animation.Play("jumpdown"); // ----------------------------------------->
             AudioManager.instance.Play("Fall45");
 
@@ -336,7 +416,7 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
                 this_rb.AddForce(new Vector3(down45_force, -down45_force * 2f, 0));
 
             INCREMENT_CURRENT_SPEED();
-            challenge_Controller.Land();
+            //challenge_Controller.Land();
 
             is_fall_pressed = true;
         }
@@ -370,7 +450,7 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
         {
             collected_diamonds_num++;
             diamonds_collected_txt.text = collected_diamonds_num.ToString();
-            challenge_Controller.CatchDiamond();
+            //challenge_Controller.CatchDiamond();
             is_diamond_picked = false;
         }
     }
@@ -397,6 +477,7 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
     public void START()
     {
         tap_to_play_UI.SetActive(false);
+        is_started = true;
         AudioManager.instance.Play("Running");
         StartRunning();
     }
@@ -432,15 +513,30 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
         SaveGame.Save("SCORE", total_score_num);
     }
 
-    public void DEATH()
+    public IEnumerator DEATH()
     {
-        if (GO_UI != null)
-            GO_UI.SetActive(true);
+        AudioManager.instance.Stop("FireTurbin");
 
         // disable the camera movement
         cameraMovementController.Target = null;
-        Destroy(gameObject, 1f);
+        animator.animation.Play("explosion", 1);
+        is_Player_Dead = true;
+        fireTurbin.SetActive(false);
 
+        foreach (var part in bodyParts)
+        {
+            part.GetComponent<PolygonCollider2D>().enabled = true;
+            part.GetComponent<Rigidbody2D>().isKinematic = false;
+        }
+
+        drone.SetActive(false);
+
+        yield return new WaitForSeconds(1f);
+
+        if (GO_UI != null)
+            GO_UI.SetActive(true);
+
+        Destroy(gameObject, 1f);
         //SaveGame.Save("DISTANCE", distance_traveled);
     }
 
@@ -494,7 +590,8 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
             #region ACT
 
             forward_speed *= 2f;
-            animator.animation.Play("push"); // ----------------------------------------->
+            animator.animation.Stop("push");
+            animator.animation.Play("pushcircle"); // ----------------------------------------->
 
             animation_for_accelerationBtn.Play(animation_for_accelerationBtn.name);
 
@@ -510,7 +607,7 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
             }
 
             forward_speed /= 2f;
-            animator.animation.Stop("push"); // ----------------------------------------->
+            animator.animation.Stop("pushcircle"); // ----------------------------------------->
 
 
             animation_for_accelerationBtn.Stop(animation_for_accelerationBtn.name);
@@ -525,86 +622,128 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
         StartCoroutine("PUSH_enum");
     }
 
+    private IEnumerator LAND_enum()
+    {
+        animator.animation.Stop("freeFly"); // ----------------------------------------->
+        animator.animation.Stop("jumpup"); // ----------------------------------------->
+        animator.animation.Stop("jumpdown"); // ----------------------------------------->
+        INCREMENT_CURRENT_SPEED();
+
+        #region Activate Reward text
+        if (!is_fall_pressed && is_Jumped)
+        {
+            StartCoroutine("Activate_Reward_text", REWARD_FOR_LONG_JUMP);
+            GAME_CONTROLLER.SHORT_VIBRATION();
+            //challenge_Controller.LongJump();
+            animator.animation.Play("stronglanding"); // ----------------------------------------->
+            is_strongLanding = true;
+        }
+        else
+            StartCoroutine("Activate_Reward_text", REWARD_FOR_NICE_FALL);
+        #endregion
+
+        #region Animation
+        if (!is_strongLanding)
+        {
+            //animator.animation.Play("freefall"); // ----------------------------------------->
+            //yield return new WaitForSeconds(0.3f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.5f);
+            is_strongLanding = false;
+        }
+
+        animator.animation.Play("run"); // ----------------------------------------->
+        #endregion
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.tag == "Ground")
+        if (is_started)
         {
-            DECREMENT_CURRENT_SPEED();
-
-            AudioManager.instance.Play("Land");
-            AudioManager.instance.Play("Running");
-
-            if (acceleration_btn != null)
-                acceleration_btn.SetActive(true);
-
-            //animator.SetBool("is_LongJump", false);
-
-            //Shadow.SetActive(false);
-
-            #region Activate Reward text
-            if (!is_fall_pressed && is_Jumped)
+            if (collision.collider.tag == "Ground")
             {
-                StartCoroutine("Activate_Reward_text", REWARD_FOR_LONG_JUMP);
-                GAME_CONTROLLER.SHORT_VIBRATION();
-                challenge_Controller.LongJump();
-                animator.animation.Play("longJump"); // ----------------------------------------->
+                if (!is_Player_Dead)
+                {
+                    fireTurbin.SetActive(false);
+                    this_rb.gravityScale = new_gravity_scale;
+
+                    DECREMENT_CURRENT_SPEED();
+                    DECREMENT_CURRENT_SPEED();
+
+                    AudioManager.instance.Stop("FireTurbin");
+                    AudioManager.instance.Play("Land");
+                    AudioManager.instance.Play("Running");
+
+                    if (acceleration_btn != null)
+                        acceleration_btn.SetActive(true);
+
+                    //animator.SetBool("is_LongJump", false);
+
+                    Shadow.SetActive(false);
+
+                    StartCoroutine("LAND_enum");
+
+                    #region Constrains FreezeAll and bools 
+                    this_rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                    is_fall_pressed = false;
+                    is_up_zone_triggered = false;
+                    is_Jumped = false;
+                    is_Grounded = true;
+                    #endregion
+
+                    #region Time and Constrains
+                    Time.timeScale = 1f;
+                    this_rb.constraints = RigidbodyConstraints2D.None;
+                    this_rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                    #endregion
+                }
             }
-            else
-                StartCoroutine("Activate_Reward_text", REWARD_FOR_NICE_FALL);
-            #endregion
-
-            #region Animation
-            animator.animation.Stop("jumpup"); // ----------------------------------------->
-            animator.animation.Play("run"); // ----------------------------------------->
-            animator.animation.Stop("jumpdown"); // ----------------------------------------->
-            #endregion
-
-            #region Constrains FreezeAll and bools 
-            this_rb.constraints = RigidbodyConstraints2D.FreezeAll;
-            is_fall_pressed = false;
-            is_up_zone_triggered = false;
-            is_Jumped = false;
-            is_Grounded = true;
-            #endregion
-
-            #region Time and Constrains
-            Time.timeScale = 1f;
-            this_rb.constraints = RigidbodyConstraints2D.None;
-            this_rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-            #endregion
-        }
-        if (collision.collider.tag == "WALL")
-        {
-            ChangeDirection();
-            UpdateMap();
-            Change_Camera_Position();
-        }
-
-        if (collision.collider.tag == "ROCK")
-        {
-            DEATH();
-        }
-        if (collision.collider.tag == "StoneToDrag")
-        {
-            foreach (var item in acceleration_UI)
+            if (collision.collider.tag == "WALL")
             {
-                item.SetActive(true);
+                if (!is_Player_Dead)
+                {
+                    ChangeDirection();
+                    UpdateMap();
+                    Change_Camera_Position();
+                }
             }
 
-            is_stone_to_drag_triggered = true;
+            if (collision.collider.tag == "ROCK")
+            {
+                StartCoroutine("DEATH");
+            }
+            if (collision.collider.tag == "StoneToDrag")
+            {
+                if (!is_Player_Dead)
+                {
+                    foreach (var item in acceleration_UI)
+                    {
+                        item.SetActive(true);
+                    }
+                    animator.animation.Stop("run");
+                    animator.animation.Play("push");
+
+                    is_stone_to_drag_triggered = true;
+                }
+            }
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.collider.tag == "Ground")
-        {
-            animator.animation.Stop("run"); // ----------------------------------------->
-            AudioManager.instance.Stop("Running");
+        if (is_started)
+            if (collision.collider.tag == "Ground")
+            {
+                animator.animation.Stop("run"); // ----------------------------------------->
+                animator.animation.Play("freeFly");
 
-            is_Jumped = true;
-            is_Grounded = false;
-        }
+                AudioManager.instance.Stop("Running");
+
+                is_Jumped = true;
+                is_Grounded = false;
+            }
     }
 
     private void DROP_THE_ROCK(Rigidbody2D rb)
@@ -617,24 +756,40 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
     {
         if (collision.tag == "DEAD_ZONE")
         {
-            DEATH();
+            if (!is_Player_Dead)
+                StartCoroutine("DEATH");
         }
         if (collision.tag == "WIN_ZONE")
         {
-            WIN();
+            if (!is_Player_Dead)
+                WIN();
         }
         if (collision.tag == "RUN_TRIGGER")
         {
-            foreach (var item in acceleration_UI)
+            if (!is_Player_Dead)
             {
-                item.SetActive(true);
+                foreach (var item in acceleration_UI)
+                {
+                    item.SetActive(true);
+                }
+
+                is_run_zone_triggered = true;
+
+                foreach (var rock in collision.gameObject.GetComponentInParent<RockFalling_Land>().rocks)
+                {
+                    DROP_THE_ROCK(rock);
+                }
             }
-
-            is_run_zone_triggered = true;
-
-            foreach (var rock in collision.gameObject.GetComponentInParent<RockFalling_Land>().rocks)
+        }
+        if (collision.tag == "CROUCH_TRIGGER")
+        {
+            if (!is_Player_Dead)
             {
-                DROP_THE_ROCK(rock);
+                foreach (var item in acceleration_UI)
+                {
+                    item.SetActive(true);
+                }
+                is_crouch_zone_triggered = true;
             }
         }
         if (collision.tag == "SAVE_CLIMB")
@@ -654,17 +809,37 @@ public class PLAYER_MOVEMENT_SYSTEM : MonoBehaviour
         }
         if (collision.tag == "CHECKPOINT")
         {
-            StartCoroutine("Activate_Reward_text", REWARD_FOR_CHECKPOINT);
-            CHECKPOINT(collision);
+            if (!is_Player_Dead)
+            {
+                StartCoroutine("Activate_Reward_text", REWARD_FOR_CHECKPOINT);
+                CHECKPOINT(collision);
+            }
         }
         if (collision.tag == "SHADOW")
         {
             AudioManager.instance.Play("Shadow");
-            challenge_Controller.LandOnShadow();
+            //challenge_Controller.LandOnShadow();
         }
         if (collision.tag == "EASTER_EGG")
         {
-            challenge_Controller.FindEasterEgg();
+            //challenge_Controller.FindEasterEgg();
+        }
+        if (collision.tag == "ROLLING_TRIGGER")
+        {
+            collision.gameObject.GetComponent<RollingBall_Controller>().ActivateObstacle();
+        }
+        if (collision.tag == "BALL_TRIGGER")
+        {
+            collision.gameObject.GetComponent<Balls_System>().Activate();
+        }
+        if (collision.tag == "Energy")
+        {
+            if (!is_Player_Dead)
+            {
+                INFO_HOLDER.Change_Energy_State(-5);
+                AudioManager.instance.Play("Energy");
+                Destroy(collision.gameObject);
+            }
         }
     }
 

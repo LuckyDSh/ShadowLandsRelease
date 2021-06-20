@@ -30,6 +30,14 @@ TagManager:
   - StoneToDrag
   - Fire
   - Coin
+  - Drone
+  - Ball
+  - CROUCH_TRIGGER
+  - FxTemporaire
+  - ROLLING_TRIGGER
+  - BALL_TRIGGER
+  - SUN_TRIGGER
+  - Energy
   layers:
   - Default
   - TransparentFX

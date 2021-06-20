@@ -8,6 +8,7 @@ public class RopeCutter : MonoBehaviour
 {
     #region Variables
     private Vector2 initialPosition;
+    [SerializeField] private Rigidbody2D Land_rb;
     [SerializeField] private GameObject tutorial;
     #endregion
 
@@ -56,7 +57,10 @@ public class RopeCutter : MonoBehaviour
             AudioManager.instance.Play("ChainCut");
             tutorial.SetActive(false);
             Destroy(collision.gameObject);
-            PLAYER_MOVEMENT_SYSTEM.is_hangedLandCut = true;
+
+            //Rb activation
+            Land_rb.AddForce(-Land_rb.transform.up * 1f, ForceMode2D.Impulse);
+            //PLAYER_MOVEMENT_SYSTEM.is_hangedLandCut = true;
         }
     }
 }

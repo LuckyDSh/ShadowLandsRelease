@@ -16,7 +16,7 @@
         {
             GAME_CONTROLLER = GameObject.FindGameObjectWithTag("GAME_CONTROLLER").GetComponent<GAME_CONTROLLER>();
 
-            if (SAVE_GAME_HOLDER.index_of_opened_level >= index_buffer || index_buffer == 2)
+            if (SAVE_GAME_HOLDER.index_of_opened_level >= index_buffer || index_buffer == 3)
             {
                 locker.SetActive(false);
             }
@@ -34,7 +34,7 @@
 
         public void LOAD()
         {
-            if (SAVE_GAME_HOLDER.index_of_opened_level >= index_buffer || index_buffer == 2)
+            if (SAVE_GAME_HOLDER.index_of_opened_level >= index_buffer || index_buffer == 3)
                 GAME_CONTROLLER.LOAD_LEVEL(index_buffer);
             else
             {
